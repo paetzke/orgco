@@ -85,9 +85,14 @@ def textify(s, outputtype):
         if len(markup) > 1:
             if outputtype == 'html':
                 markup = replace_html(markup)
-
         result.append(markup)
-    return ''.join(result)
+
+    text = ''.join(result)
+    if markup.endswith('\\'):
+        if outputtype == 'html':
+            text = '%s<br />' % text[:-2]
+
+    return text
 
 
 def _to_html(things):
@@ -118,7 +123,8 @@ def _to_html(things):
             text = '<li>%s</li>' % textify_html(thing)
             result.append(text)
         elif isinstance(thing, Paragraph):
-            text = '<p>%s</p>' % textify_html(thing)
+            lines = (textify_html(line) for line in thing.lines)
+            text = '<p>%s</p>' % ' '.join(lines)
             result.append(text)
         elif isinstance(thing, Table):
             result.append('<table>')
