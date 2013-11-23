@@ -184,6 +184,12 @@ class TestHtml(unittest.TestCase):
         self.assertEqual(len(html), 4)
         self.assertEqual(html, expected)
 
+    def test_paragraph01(self):
+        html = convert(OrgDoc(load_data('paragraph01.org')), 'html')
+        expected = load_html('paragraph01.html')
+        self.assertEqual(len(html), 3)
+        self.assertEqual(html, expected)
+
     def test_table02(self):
         html = convert(OrgDoc(load_data('table02.org')), 'html')
         expected = load_html('table02.html')
