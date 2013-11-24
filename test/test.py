@@ -14,6 +14,7 @@ import unittest
 BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, BASE_DIR)
 
+from orgco import convert_html
 from orgco.convert import convert
 from orgco.orgalyzer import OrgDoc
 
@@ -205,6 +206,15 @@ class TestHtml(unittest.TestCase):
     def test_text00(self):
         html = convert(OrgDoc(load_data('text00.org')), 'html')
         expected = load_html('text00.html')
+        self.assertEqual(html, expected)
+
+
+class TestShortcuts(unittest.TestCase):
+
+    def test_html_shortcut(self):
+        html = convert_html(load_data('table03.org'))
+        expected = load_html('table03.html')
+        self.assertEqual(len(html), 8)
         self.assertEqual(html, expected)
 
 
