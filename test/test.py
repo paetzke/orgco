@@ -215,5 +215,63 @@ class TestShortcuts(unittest.TestCase):
         self.assertEqual(html, expected)
 
 
+class TestRst(unittest.TestCase):
+
+    def test_code00(self):
+        rst = convert(OrgDoc(load_data('code00.org')), 'rst')
+        expected = load('code00.rst')
+        self.assertEqual(rst, expected)
+
+    def test_definition00(self):
+        rst = convert(OrgDoc(load_data('definition00.org')), 'rst')
+        expected = load('definition00.rst')
+        self.assertEqual(rst, expected)
+
+    def test_header00(self):
+        rst = convert(OrgDoc(load_data('header00.org')), 'rst')
+        expected = ['header1', '=======']
+        self.assertEqual(rst, expected)
+
+    def test_header01(self):
+        rst = convert(OrgDoc(load_data('header01.org')), 'rst')
+        expected = load('header01.rst')
+        self.assertEqual(rst, expected)
+
+    def test_list00(self):
+        rst = convert(OrgDoc(load_data('list00.org')), 'rst')
+        expected = load('list00.rst')
+        self.assertEqual(rst, expected)
+
+    def test_list01(self):
+        rst = convert(OrgDoc(load_data('list01.org')), 'rst')
+        expected = load('list01.rst')
+        self.assertEqual(rst, expected)
+
+    def test_list02(self):
+        rst = convert(OrgDoc(load_data('list02.org')), 'rst')
+        expected = load('list02.rst')
+        self.assertEqual(rst, expected)
+
+    def test_list03(self):
+        rst = convert(OrgDoc(load_data('list03.org')), 'rst')
+        expected = load('list03.rst')
+        self.assertEqual(rst, expected)
+
+    def test_paragraph00(self):
+        rst = convert(OrgDoc(load_data('paragraph00.org')), 'rst')
+        expected = load('paragraph00.rst')
+        self.assertEqual(rst, expected)
+
+    def test_paragraph01(self):
+        rst = convert(OrgDoc(load_data('paragraph01.org')), 'rst')
+        expected = load('paragraph01.rst')
+        self.assertEqual(rst, expected)
+
+    def test_text00(self):
+        rst = convert(OrgDoc(load_data('text00.org')), 'rst')
+        expected = load('text00.rst')
+        self.assertEqual(rst, expected)
+
+
 if __name__ == '__main__':
     unittest.main()
