@@ -25,7 +25,7 @@ def load_data(filename):
         return f.read()
 
 
-def load_html(filename):
+def load(filename):
     return load_data(filename).split('\n')[0:-1]
 
 
@@ -38,8 +38,8 @@ class TestOrgDoc(unittest.TestCase):
         self.assertEqual(org.things[0].language, 'emacs-lisp')
         self.assertEqual(str(org.things[0]), expected)
 
-    def test_description00(self):
-        org = OrgDoc(load_data('description00.org'))
+    def test_definition00(self):
+        org = OrgDoc(load_data('definition00.org'))
 
         self.assertEqual(len(org.things), 1)
         self.assertEqual(len(org.things[0].things), 3)
@@ -50,8 +50,8 @@ class TestOrgDoc(unittest.TestCase):
         self.assertEqual(org.things[0].things[2].term, 'short3')
         self.assertEqual(org.things[0].things[2].description, 'long3')
 
-    def test_description01(self):
-        org = OrgDoc(load_data('description01.org'))
+    def test_definition01(self):
+        org = OrgDoc(load_data('definition01.org'))
 
         self.assertEqual(len(org.things), 1)
         self.assertEqual(len(org.things[0].things), 3)
@@ -156,61 +156,54 @@ class TestOrgDoc(unittest.TestCase):
 
 class TestHtml(unittest.TestCase):
 
-    def test_html_description01(self):
-        html = convert(OrgDoc(load_data('description01.org')), 'html')
-        expected = load_html('description01.html')
+    def test_definition01(self):
+        html = convert(OrgDoc(load_data('definition01.org')), 'html')
+        expected = load('definition01.html')
         self.assertEqual(html, expected)
 
-    def test_html_header00(self):
+    def test_header00(self):
         html = convert(OrgDoc(load_data('header00.org')), 'html')
         expected = ['<h1>header1</h1>']
-        self.assertEqual(len(html), 1)
         self.assertEqual(html, expected)
 
-    def test_html_header01(self):
+    def test_header01(self):
         html = convert(OrgDoc(load_data('header01.org')), 'html')
-        expected = load_html('header01.html')
-        self.assertEqual(len(html), 3)
+        expected = load('header01.html')
         self.assertEqual(html, expected)
 
-    def test_html_list01(self):
+    def test_list01(self):
         html = convert(OrgDoc(load_data('list01.org')), 'html')
-        expected = load_html('list01.html')
-        self.assertEqual(len(html), 6)
+        expected = load('list01.html')
         self.assertEqual(html, expected)
 
-    def test_html_list03(self):
+    def test_list03(self):
         html = convert(OrgDoc(load_data('list03.org')), 'html')
-        expected = load_html('list03.html')
+        expected = load('list03.html')
         self.assertEqual(html, expected)
 
     def test_paragraph00(self):
         html = convert(OrgDoc(load_data('paragraph00.org')), 'html')
-        expected = load_html('paragraph00.html')
-        self.assertEqual(len(html), 4)
+        expected = load('paragraph00.html')
         self.assertEqual(html, expected)
 
     def test_paragraph01(self):
         html = convert(OrgDoc(load_data('paragraph01.org')), 'html')
-        expected = load_html('paragraph01.html')
-        self.assertEqual(len(html), 3)
+        expected = load('paragraph01.html')
         self.assertEqual(html, expected)
 
     def test_table02(self):
         html = convert(OrgDoc(load_data('table02.org')), 'html')
-        expected = load_html('table02.html')
-        self.assertEqual(len(html), 27)
+        expected = load('table02.html')
         self.assertEqual(html, expected)
 
     def test_table03(self):
         html = convert(OrgDoc(load_data('table03.org')), 'html')
-        expected = load_html('table03.html')
-        self.assertEqual(len(html), 8)
+        expected = load('table03.html')
         self.assertEqual(html, expected)
 
     def test_text00(self):
         html = convert(OrgDoc(load_data('text00.org')), 'html')
-        expected = load_html('text00.html')
+        expected = load('text00.html')
         self.assertEqual(html, expected)
 
 
@@ -218,8 +211,7 @@ class TestShortcuts(unittest.TestCase):
 
     def test_html_shortcut(self):
         html = convert_html(load_data('table03.org'))
-        expected = load_html('table03.html')
-        self.assertEqual(len(html), 8)
+        expected = load('table03.html')
         self.assertEqual(html, expected)
 
 

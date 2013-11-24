@@ -7,7 +7,7 @@ All rights reserved.
 """
 import os
 
-from orgco.orgalyzer import Code, DescriptionList, DescriptionItem, Header, List, \
+from orgco.orgalyzer import Code, DefinitionList, DefinitionItem, Header, List, \
     ListItem, Paragraph, Table, TableRow
 
 
@@ -102,11 +102,11 @@ def _to_html(things):
         if isinstance(thing, Code):
             text = '<pre>%s</pre>' % thing
             result.append(text)
-        elif isinstance(thing, DescriptionList):
+        elif isinstance(thing, DefinitionList):
             result.append('<dl>')
             result.extend(_to_html(thing.things))
             result.append('</dl>')
-        elif isinstance(thing, DescriptionItem):
+        elif isinstance(thing, DefinitionItem):
             result.append('<dt>%s</dt>' % textify_html(thing.term))
             result.append('<dd>%s</dd>' % textify_html(thing.description))
         elif isinstance(thing, Header):
