@@ -88,9 +88,9 @@ def textify(s, outputtype):
         result.append(markup)
 
     text = ''.join(result)
-    if markup.endswith('\\'):
+    if text.endswith(r' \\'):
         if outputtype == 'html':
-            text = '%s<br />' % text[:-2]
+            text = '%s<br />' % text[:-3]
 
     return text
 
