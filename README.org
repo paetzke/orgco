@@ -8,12 +8,13 @@ orgco is tool/library for converting emacs' orgmode to other formats.
 supported output formats:
 
 - html
+- rst
 
 supported orgmode tags:
 
 - headers
 - code (inline and multi-line)
-- lists (ordered, unordered and description lists)
+- lists (ordered, unordered and definition lists)
 - tables
 - links (external and images)
 - italic, bold, underlined, stroked markups

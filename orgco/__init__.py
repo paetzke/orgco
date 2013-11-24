@@ -17,3 +17,7 @@ def _convert(content, outputtye):
 
 def convert_html(content):
     return _convert(content, 'html')
+
+
+def convert_rst(content):
+    return _convert(content, 'rst')

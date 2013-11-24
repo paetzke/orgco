@@ -22,7 +22,7 @@ class OrgDoc:
         thing = self
         for i in range(level):
             clss = cls
-            if cls == DescriptionList and i < level - 1:
+            if cls == DefinitionList and i < level - 1:
                 clss = List
             thing = self._get_thing(clss, thing=thing)
         return thing
@@ -49,10 +49,10 @@ class OrgDoc:
                 self._separated = True
                 continue
 
-            descriptionitem, level = DescriptionItem.from_string(line)
-            if descriptionitem:
-                lst = self._get_thing(DescriptionList, level=level)
-                lst.add(descriptionitem)
+            definitionlist, level = DefinitionItem.from_string(line)
+            if definitionlist:
+                lst = self._get_thing(DefinitionList, level=level)
+                lst.add(definitionlist)
                 continue
 
             header = Header.from_string(line)
@@ -98,11 +98,11 @@ class Container:
 class Code:
 
     def __init__(self, lines, language=None):
-        self._lines = lines
+        self.lines = lines
         self.language = language
 
     def __str__(self):
-        return '\n'.join(self._lines)
+        return '\n'.join(self.lines)
 
     @classmethod
     def from_string(cls, line, liners):
@@ -116,11 +116,11 @@ class Code:
         return code
 
 
-class DescriptionList(Container):
+class DefinitionList(Container):
     pass
 
 
-class DescriptionItem:
+class DefinitionItem:
 
     def __init__(self, term, description):
         self.term = term
