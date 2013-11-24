@@ -9,8 +9,8 @@ All rights reserved.
 
 from argparse import ArgumentParser, FileType
 
-from orgco.convert import convert
-from orgco.orgalyzer import OrgDoc
+from .convert import convert
+from .orgalyzer import OrgDoc
 
 
 def main(args):

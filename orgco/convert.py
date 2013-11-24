@@ -7,7 +7,7 @@ All rights reserved.
 """
 import os
 
-from orgco.orgalyzer import Code, DefinitionList, DefinitionItem, Header, List, \
+from .orgalyzer import Code, DefinitionList, DefinitionItem, Header, List, \
     ListItem, Paragraph, Table, TableRow
 
 
