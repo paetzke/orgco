@@ -8,6 +8,7 @@ orgco is tool/library for converting emacs' orgmode to other formats.
 supported output formats:
 
 - html
+- rst
 
 supported orgmode tags:
 

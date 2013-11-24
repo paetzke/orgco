@@ -14,44 +14,8 @@ from orgco.orgalyzer import Code, DefinitionList, DefinitionItem, Header, List, 
 def convert(orgdoc, outputtype, **kwargs):
     if outputtype == 'html':
         return to_html(orgdoc, **kwargs)
-    elif outputtype == 'md':
-        return to_markdown(orgdoc, **kwargs)
-
-
-def replace_html(markup):
-    replacements = {
-        '=': 'code',
-        '*': 'b',
-        '_': 'u',
-        '/': 'i',
-        '+': 'del'}
-
-    if markup[0] == '[':
-        link = markup[2:-2]
-
-        link_name = link.split('][')
-        if len(link_name) == 2:
-            args = {
-                'link': link_name[0],
-                'name': link_name[1],
-            }
-        else:
-            _unused, ext = os.path.splitext(link)
-
-            if ext in ['.bmp', '.jpg', '.png', '.svg']:
-                return '<img src="%s" />' % link
-            args = {
-                'link': link,
-                'name': link,
-            }
-
-        return '<a href="%(link)s">%(name)s</a>' % args
-    else:
-        args = {
-            'tag': replacements[markup[0]],
-            'text': markup[1:-1]
-        }
-        return '<%(tag)s>%(text)s</%(tag)s>' % args
+    elif outputtype == 'rst':
+        return to_rst(orgdoc, **kwargs)
 
 
 def find_markup(s, i):
@@ -85,14 +49,38 @@ def textify(s, outputtype):
         if len(markup) > 1:
             if outputtype == 'html':
                 markup = replace_html(markup)
+            elif outputtype == 'rst':
+                markup = replace_rst(markup)
         result.append(markup)
 
     text = ''.join(result)
     if text.endswith(r' \\'):
         if outputtype == 'html':
             text = '%s<br />' % text[:-3]
+        elif outputtype == 'rst':
+            text = '| %s' % text[:-3]
 
     return text
+
+
+def to_html(orgdoc, only_body=True):
+    result = []
+    if not only_body:
+        result.extend([
+            '<!DOCTYPE html>',
+            '<html>',
+            '<head>',
+            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />',
+            '</head>',
+            '<body>'
+        ])
+    result.extend(_to_html(orgdoc.things))
+    if not only_body:
+        result.extend([
+            '</body>',
+            '</html>'
+        ])
+    return result
 
 
 def _to_html(things):
@@ -146,24 +134,83 @@ def _to_html(things):
     return result
 
 
-def to_html(orgdoc, only_body=True):
-    result = []
-    if not only_body:
-        result.extend([
-            '<!DOCTYPE html>',
-            '<html>',
-            '<head>',
-            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />',
-            '</head>',
-            '<body>'
-        ])
-    result.extend(_to_html(orgdoc.things))
-    if not only_body:
-        result.extend([
-            '</body>',
-            '</html>'
-        ])
-    return result
+def replace_html(markup):
+    replacements = {
+        '=': 'code',
+        '*': 'b',
+        '_': 'u',
+        '/': 'i',
+        '+': 'del'}
+
+    if markup[0] == '[':
+        link = markup[2:-2]
+
+        link_name = link.split('][')
+        if len(link_name) == 2:
+            args = {
+                'link': link_name[0],
+                'name': link_name[1],
+            }
+        else:
+            _unused, ext = os.path.splitext(link)
+
+            if ext in ['.bmp', '.jpg', '.png', '.svg']:
+                return '<img src="%s" />' % link
+            args = {
+                'link': link,
+                'name': link,
+            }
+
+        return '<a href="%(link)s">%(name)s</a>' % args
+    else:
+        args = {
+            'tag': replacements[markup[0]],
+            'text': markup[1:-1]
+        }
+        return '<%(tag)s>%(text)s</%(tag)s>' % args
+
+
+def replace_rst(markup):
+    replacements = {
+        '=': '``',  # code
+        '*': '**',  # bold
+        '_': '',  # underline
+        '/': '*',  # italic
+        '+': ''}  # strike
+
+    if markup[0] == '[':
+
+        link = markup[2:-2]
+
+        link_name = link.split('][')
+        if len(link_name) == 2:
+            args = {
+                'link': link_name[0],
+                'name': link_name[1],
+            }
+        else:
+            _unused, ext = os.path.splitext(link)
+
+            if ext in ['.bmp', '.jpg', '.png', '.svg']:
+                return '.. image:: %s' % link
+            args = {
+                'link': link,
+                'name': link,
+            }
+
+        return '`%(name)s <%(link)s>`_' % args
+    else:
+        args = {
+            'markup': replacements[markup[0]],
+            'text': markup[1:-1]
+        }
+        return '%(markup)s%(text)s%(markup)s' % args
+
+    return markup
+
+
+def to_markdown(orgdoc):
+    return _to_markdown(orgdoc.things)
 
 
 def _to_markdown(things):
@@ -180,5 +227,40 @@ def _to_markdown(things):
     return result
 
 
-def to_markdown(orgdoc, **kwargs):
-    return _to_markdown(orgdoc.things)
+def to_rst(orgdoc):
+    return _to_rst(orgdoc.things)
+
+
+def _to_rst(things, level=0, **kwargs):
+    result = []
+    textify_rst = lambda s: textify(s, 'rst')
+    for i, thing in enumerate(things):
+        if isinstance(thing, Code):
+            result.append('.. code:: %s' % thing.language)
+            result.append('')
+            result.extend(('    %s' % line for line in thing.lines))
+        elif isinstance(thing, DefinitionList):
+            result.extend(_to_rst(thing.things))
+        elif isinstance(thing, DefinitionItem):
+            result.append('%s' % textify_rst(thing.term))
+            result.append('    %s' % textify_rst(thing.description))
+            result.append('')
+        elif isinstance(thing, Header):
+            levels = ['=', '-', '~']
+            result.append('%s' % textify_rst(thing))
+            result.append('%s' % levels[thing.level - 1] * len(str(thing)))
+        elif isinstance(thing, List):
+            result.extend(_to_rst(thing.things, level + 1, ordered=thing.ordered))
+        elif isinstance(thing, ListItem):
+            if kwargs['ordered']:
+                text = '%d. %s' % (i + 1, textify_rst(thing))
+            else:
+                text = '%s* %s' % ('  ' * (level - 1), textify_rst(thing))
+            result.append(text)
+        elif isinstance(thing, Paragraph):
+            for line in thing.lines:
+                result.append(textify_rst(line))
+            result.append('')
+        else:
+            raise NotImplementedError('BNG')
+    return result

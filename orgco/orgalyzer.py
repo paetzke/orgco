@@ -98,11 +98,11 @@ class Container:
 class Code:
 
     def __init__(self, lines, language=None):
-        self._lines = lines
+        self.lines = lines
         self.language = language
 
     def __str__(self):
-        return '\n'.join(self._lines)
+        return '\n'.join(self.lines)
 
     @classmethod
     def from_string(cls, line, liners):
