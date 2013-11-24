@@ -116,9 +116,10 @@ def _to_html(things):
             text = '<h%(level)d>%(text)s</h%(level)d>' % args
             result.append(text)
         elif isinstance(thing, List):
-            result.append('<ul>')
+            tag = 'ol' if thing.ordered else 'ul'
+            result.append('<%s>' % tag)
             result.extend(_to_html(thing.things))
-            result.append('</ul>')
+            result.append('</%s>' % tag)
         elif isinstance(thing, ListItem):
             text = '<li>%s</li>' % textify_html(thing)
             result.append(text)
