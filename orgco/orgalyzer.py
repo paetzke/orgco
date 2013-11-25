@@ -155,7 +155,7 @@ class Header:
 class List(Container):
 
     def __init__(self, ordered=False):
-        super().__init__()
+        Container.__init__(self)
         self.ordered = ordered
 
 
