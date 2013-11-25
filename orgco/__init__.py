@@ -12,7 +12,7 @@ from .orgalyzer import OrgDoc
 def _convert(content, outputtye):
     orgdoc = OrgDoc(content)
     result = convert(orgdoc, outputtye)
-    return result
+    return '\n'.join(result)
 
 
 def convert_html(content):

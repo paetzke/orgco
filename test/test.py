@@ -211,7 +211,7 @@ class TestShortcuts(unittest.TestCase):
 
     def test_html_shortcut(self):
         html = convert_html(load_data('table03.org'))
-        expected = load('table03.html')
+        expected = '\n'.join(load('table03.html'))
         self.assertEqual(html, expected)
 
 
