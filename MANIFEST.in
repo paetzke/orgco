@@ -1,0 +1,3 @@
+include LICENSE.org
+include README.org
+exclude test/test.py
