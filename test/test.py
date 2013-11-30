@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.insert(0, BASE_DIR)
 
 from orgco import convert_html
-from orgco.convert import convert
+from orgco.convert import convert, find_markup
 from orgco.orgalyzer import OrgDoc
 
 
@@ -27,6 +27,15 @@ def load_data(filename):
 
 def load(filename):
     return load_data(filename).split('\n')[0:-1]
+
+
+class TestFindMarkup(unittest.TestCase):
+
+    def test_(self):
+        markup, i = find_markup('[[Some link]]\r', 0)
+
+        self.assertEqual(i, 13)
+        self.assertEqual(markup, '[[Some link]]')
 
 
 class TestOrgDoc(unittest.TestCase):
