@@ -27,7 +27,7 @@ def find_markup(s, i):
         ('+', '+'),
         ('[[', ']]'),
     ]
-    valid_after = [',', '.', ')', ' ', '\t']
+    valid_after = [',', '.', ')', ' ', '\t', '\r']
 
     for start, end in looking_for:
         if s[i:].startswith(start):
