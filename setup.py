@@ -26,7 +26,7 @@ with open(os.path.join(pathname, 'README.rst')) as f:
 setup(name='orgco',
       description='orgco is tool/library for converting emacs` orgmode to other formats.',
       long_description=long_description,
-      version='0.0.5',
+      version='0.0.6',
       author='Friedrich Paetzke',
       author_email='f.paetzke@gmail.com',
       license='BSD',
