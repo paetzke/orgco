@@ -15,7 +15,7 @@ class OrgDoc:
         self._separated = False
 
         if content:
-            liner = (line for line in content.split('\n'))
+            liner = (line.rstrip() for line in content.split('\n'))
             self._analyze(liner)
 
     def _get_thing_by_level(self, cls, level):
