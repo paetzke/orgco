@@ -31,11 +31,19 @@ def load(filename):
 
 class TestFindMarkup(unittest.TestCase):
 
-    def test_(self):
+    def test_regard_return_as_space(self):
         markup, i = find_markup('[[Some link]]\r', 0)
-
         self.assertEqual(i, 13)
         self.assertEqual(markup, '[[Some link]]')
+
+    def test_minimum_markup_length(self):
+        markup, i = find_markup('c++', 0)
+        self.assertEqual(markup, 'c')
+        self.assertEqual(i, 1)
+
+        markup, i = find_markup('c++', i)
+        self.assertEqual(markup, '+')
+        self.assertEqual(i, 2)
 
 
 class TestOrgDoc(unittest.TestCase):
