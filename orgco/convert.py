@@ -35,7 +35,8 @@ def find_markup(s, i):
                 if s[j:].startswith(end) and \
                         (len(s[j:]) == len(end) or s[j:][len(end)] in valid_after):
                     markup = s[i:j + len(end)]
-                    return markup, i + len(markup)
+                    if len(markup) > len(start) + len(end):
+                        return markup, i + len(markup)
     return s[i], i + 1
 
 
