@@ -16,7 +16,7 @@ try:
     with open(os.path.join(pathname, 'README.org')) as org_file:
         with open(os.path.join(pathname, 'README.rst'), 'w') as rst_file:
             rst_file.write(convert_rst(org_file.read()))
-except (FileNotFoundError, ImportError):
+except:
     pass
 
 with open(os.path.join(pathname, 'README.rst')) as f:
@@ -26,7 +26,7 @@ with open(os.path.join(pathname, 'README.rst')) as f:
 setup(name='orgco',
       description='orgco is tool/library for converting emacs` orgmode to other formats.',
       long_description=long_description,
-      version='0.0.4',
+      version='0.0.5',
       author='Friedrich Paetzke',
       author_email='f.paetzke@gmail.com',
       license='BSD',
