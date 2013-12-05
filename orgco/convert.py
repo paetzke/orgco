@@ -27,7 +27,7 @@ def find_markup(s, i):
         ('+', '+'),
         ('[[', ']]'),
     ]
-    valid_after = lambda c: c.isspace() or c in ',.)'
+    valid_after = lambda c: c.isspace() or c in ',.):'
 
     for start, end in looking_for:
         if s[i:].startswith(start):
