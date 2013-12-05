@@ -1,7 +1,8 @@
 MANIFEST
 README.rst
+*.pyc
 
 .idea/
+build/
 dist/
-
-*.pyc
+orgco.egg-info/
