@@ -45,6 +45,11 @@ class TestFindMarkup(unittest.TestCase):
         self.assertEqual(markup, '+')
         self.assertEqual(i, 2)
 
+    def test_colon_after_markup(self):
+        markup, i = find_markup('/bold/: bool, default False', 0)
+        self.assertEqual(markup, '/bold/')
+        self.assertEqual(i, 6)
+
 
 class TestOrgDoc(unittest.TestCase):
 
