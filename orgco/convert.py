@@ -110,8 +110,13 @@ def _to_html(things):
             result.extend(_to_html(thing.things))
             result.append('</%s>' % tag)
         elif isinstance(thing, ListItem):
-            text = '<li>%s</li>' % textify_html(thing)
-            result.append(text)
+            if thing.things:
+                result.append('<li>%s' % textify_html(thing))
+                result.extend(_to_html(thing.things))
+                result.append('</li>')
+            else:
+                text = '<li>%s</li>' % textify_html(thing)
+                result.append(text)
         elif isinstance(thing, Paragraph):
             lines = (textify_html(line) for line in thing.lines)
             text = '<p>%s</p>' % ' '.join(lines)

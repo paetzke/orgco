@@ -81,7 +81,7 @@ class OrgDoc:
                 self.things.append(header)
                 continue
 
-            listitem, level, ordered = ListItem.from_string(line)
+            listitem, level, ordered = ListItem.from_string(line, liner)
             if listitem:
                 lst = self._get_thing(List, level=level)
                 lst.ordered = ordered
@@ -182,22 +182,54 @@ class List(Container):
 
 class ListItem:
 
-    def __init__(self, text):
-        self.text = text
+    def __init__(self, lines):
+        self.lines = []
+        lines = (line for line in lines)
+        for line in lines:
+            if not line:
+                break
+            self.lines.append(line)
+
+        orgdoc = OrgDoc('\n'.join(lines))
+        self.things = orgdoc.things
 
     def __str__(self):
-        return self.text
+        return ' '.join(self.lines)
 
     @classmethod
-    def from_string(cls, line):
-        mat = re.match(r'^([ ]*)\- (.+)$', line)
-        if mat:
-            level = len(mat.group(1)) // 2 + 1
-            return cls(mat.group(2)), level, False
-        mat = re.match(r'^([ ]*)\d+\. (.+)$', line)
-        if mat:
-            level = len(mat.group(1)) // 2 + 1
-            return cls(mat.group(2)), level, True
+    def from_string(cls, line, liner):
+        regexps = [r'^([ ]*)(\d+\.) (.+)$', r'^([ ]*)(-) (.+)$']
+        for regexp in regexps:
+            mat = re.match(regexp, line)
+            if mat:
+                is_ordered = mat.group(2) != '-'
+                level = len(mat.group(1)) // 2 + 1
+                spaces = (len(mat.group(1)) + 2) * ' '
+                if is_ordered:
+                    spaces += (len(mat.group(2)) - 1) * ' '
+
+                lines = [mat.group(3)]
+                found_blank_line = False
+                if len(spaces) > len(mat.group(1)):
+                    for line in liner:
+                        if not line:
+                            if found_blank_line:
+                                liner.pushback(2)
+                                break
+                            found_blank_line = True
+                            continue
+
+                        if found_blank_line:
+                            lines.append('')
+                            found_blank_line = False
+
+                        if line.startswith(spaces) and not line.startswith('%s-' % spaces):
+                            lines.append(line[len(spaces):])
+                        else:
+                            liner.pushback()
+                            break
+
+                return cls(lines), level, is_ordered
         return None, 0, False
 
 

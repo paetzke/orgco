@@ -101,9 +101,9 @@ class TestOrgDoc(unittest.TestCase):
 
         self.assertEqual(len(org.things), 1)
         self.assertEqual(len(org.things[0].things), 3)
-        self.assertEqual(org.things[0].things[0].text, 'item1')
-        self.assertEqual(org.things[0].things[1].text, 'item2')
-        self.assertEqual(org.things[0].things[2].text, 'item3')
+        self.assertEqual(str(org.things[0].things[0]), 'item1')
+        self.assertEqual(str(org.things[0].things[1]), 'item2')
+        self.assertEqual(str(org.things[0].things[2]), 'item3')
 
     def test_list02(self):
         org = OrgDoc(load_data('list02.org'))
