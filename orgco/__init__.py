@@ -8,7 +8,7 @@ All rights reserved.
 from .convert import convert
 from .orgalyzer import OrgDoc
 
-__version__ = '0.0.6'
+__version__ = '0.0.7'
 __author__ = 'Friedrich Paetzke'
 __license__ = 'BSD'
 __copyright__ = 'Copyright 2013 Friedrich Paetzke'
