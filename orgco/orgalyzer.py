@@ -28,6 +28,9 @@ class Liner:
         self.cnt += 1
         return line
 
+    def next(self):
+        return self.__next__()
+
 
 class OrgDoc:
 
