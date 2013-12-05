@@ -64,9 +64,9 @@ def textify(s, outputtype):
     return text
 
 
-def to_html(orgdoc, only_body=True):
+def to_html(orgdoc, header=False):
     result = []
-    if not only_body:
+    if header:
         result.extend([
             '<!DOCTYPE html>',
             '<html>',
@@ -76,7 +76,7 @@ def to_html(orgdoc, only_body=True):
             '<body>'
         ])
     result.extend(_to_html(orgdoc.things))
-    if not only_body:
+    if header:
         result.extend([
             '</body>',
             '</html>'

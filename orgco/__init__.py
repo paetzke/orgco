@@ -9,14 +9,14 @@ from .convert import convert
 from .orgalyzer import OrgDoc
 
 
-def _convert(content, outputtye):
+def _convert(content, outputtye, **kwargs):
     orgdoc = OrgDoc(content)
-    result = convert(orgdoc, outputtye)
+    result = convert(orgdoc, outputtye, **kwargs)
     return '\n'.join(result)
 
 
-def convert_html(content):
-    return _convert(content, 'html')
+def convert_html(content, header=False):
+    return _convert(content, 'html', header=header)
 
 
 def convert_rst(content):
