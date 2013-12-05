@@ -6,7 +6,6 @@ Copyright (c) 2013, Friedrich Paetzke (f.paetzke@gmail.com)
 All rights reserved.
 
 """
-
 import sys
 import os
 import unittest
@@ -44,6 +43,11 @@ class TestFindMarkup(unittest.TestCase):
         markup, i = find_markup('c++', i)
         self.assertEqual(markup, '+')
         self.assertEqual(i, 2)
+
+    def test_colon_after_markup(self):
+        markup, i = find_markup('/bold/: bool, default False', 0)
+        self.assertEqual(markup, '/bold/')
+        self.assertEqual(i, 6)
 
 
 class TestOrgDoc(unittest.TestCase):
@@ -97,9 +101,9 @@ class TestOrgDoc(unittest.TestCase):
 
         self.assertEqual(len(org.things), 1)
         self.assertEqual(len(org.things[0].things), 3)
-        self.assertEqual(org.things[0].things[0].text, 'item1')
-        self.assertEqual(org.things[0].things[1].text, 'item2')
-        self.assertEqual(org.things[0].things[2].text, 'item3')
+        self.assertEqual(str(org.things[0].things[0]), 'item1')
+        self.assertEqual(str(org.things[0].things[1]), 'item2')
+        self.assertEqual(str(org.things[0].things[2]), 'item3')
 
     def test_list02(self):
         org = OrgDoc(load_data('list02.org'))
@@ -173,10 +177,13 @@ class TestOrgDoc(unittest.TestCase):
 
 class TestHtml(unittest.TestCase):
 
-    def test_definition01(self):
-        html = convert(OrgDoc(load_data('definition01.org')), 'html')
-        expected = load('definition01.html')
+    def assertOrgAndHtmlEqual(self, orgfile, htmlfile):
+        html = convert(OrgDoc(load_data(orgfile)), 'html')
+        expected = load(htmlfile)
         self.assertEqual(html, expected)
+
+    def test_definition01(self):
+        self.assertOrgAndHtmlEqual('definition01.org', 'definition01.html')
 
     def test_header00(self):
         html = convert(OrgDoc(load_data('header00.org')), 'html')
@@ -184,44 +191,40 @@ class TestHtml(unittest.TestCase):
         self.assertEqual(html, expected)
 
     def test_header01(self):
-        html = convert(OrgDoc(load_data('header01.org')), 'html')
-        expected = load('header01.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('header01.org', 'header01.html')
 
     def test_list01(self):
-        html = convert(OrgDoc(load_data('list01.org')), 'html')
-        expected = load('list01.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('list01.org', 'list01.html')
 
     def test_list03(self):
-        html = convert(OrgDoc(load_data('list03.org')), 'html')
-        expected = load('list03.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('list03.org', 'list03.html')
+
+    def test_list04(self):
+        self.assertOrgAndHtmlEqual('list04.org', 'list04.html')
+
+    def test_list05(self):
+        self.assertOrgAndHtmlEqual('list05.org', 'list05.html')
+
+    def test_list06(self):
+        self.assertOrgAndHtmlEqual('list06.org', 'list06.html')
+
+    def test_list07(self):
+        self.assertOrgAndHtmlEqual('list07.org', 'list07.html')
 
     def test_paragraph00(self):
-        html = convert(OrgDoc(load_data('paragraph00.org')), 'html')
-        expected = load('paragraph00.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('paragraph00.org', 'paragraph00.html')
 
     def test_paragraph01(self):
-        html = convert(OrgDoc(load_data('paragraph01.org')), 'html')
-        expected = load('paragraph01.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('paragraph01.org', 'paragraph01.html')
 
     def test_table02(self):
-        html = convert(OrgDoc(load_data('table02.org')), 'html')
-        expected = load('table02.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('table02.org', 'table02.html')
 
     def test_table03(self):
-        html = convert(OrgDoc(load_data('table03.org')), 'html')
-        expected = load('table03.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('table03.org', 'table03.html')
 
     def test_text00(self):
-        html = convert(OrgDoc(load_data('text00.org')), 'html')
-        expected = load('text00.html')
-        self.assertEqual(html, expected)
+        self.assertOrgAndHtmlEqual('text00.org', 'text00.html')
 
 
 class TestShortcuts(unittest.TestCase):
@@ -231,63 +234,53 @@ class TestShortcuts(unittest.TestCase):
         expected = '\n'.join(load('table03.html'))
         self.assertEqual(html, expected)
 
+    def test_html_with_header_shortcut(self):
+        html = convert_html(load_data('table03.org'), header=True)
+        expected = '\n'.join(load('html_with_header.html'))
+        self.assertEqual(html, expected)
+
 
 class TestRst(unittest.TestCase):
 
-    def test_code00(self):
-        rst = convert(OrgDoc(load_data('code00.org')), 'rst')
-        expected = load('code00.rst')
+    def assertOrgAndRstEqual(self, orgfile, rstfile):
+        rst = convert(OrgDoc(load_data(orgfile)), 'rst')
+        expected = load(rstfile)
         self.assertEqual(rst, expected)
 
+    def test_code00(self):
+        self.assertOrgAndRstEqual('code00.org', 'code00.rst')
+
     def test_definition00(self):
-        rst = convert(OrgDoc(load_data('definition00.org')), 'rst')
-        expected = load('definition00.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('definition00.org', 'definition00.rst')
 
     def test_header00(self):
         rst = convert(OrgDoc(load_data('header00.org')), 'rst')
-        expected = ['header1', '=======']
+        expected = ['header1', '=======', '']
         self.assertEqual(rst, expected)
 
     def test_header01(self):
-        rst = convert(OrgDoc(load_data('header01.org')), 'rst')
-        expected = load('header01.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('header01.org', 'header01.rst')
 
     def test_list00(self):
-        rst = convert(OrgDoc(load_data('list00.org')), 'rst')
-        expected = load('list00.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('list00.org', 'list00.rst')
 
     def test_list01(self):
-        rst = convert(OrgDoc(load_data('list01.org')), 'rst')
-        expected = load('list01.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('list01.org', 'list01.rst')
 
     def test_list02(self):
-        rst = convert(OrgDoc(load_data('list02.org')), 'rst')
-        expected = load('list02.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('list02.org', 'list02.rst')
 
     def test_list03(self):
-        rst = convert(OrgDoc(load_data('list03.org')), 'rst')
-        expected = load('list03.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('list03.org', 'list03.rst')
 
     def test_paragraph00(self):
-        rst = convert(OrgDoc(load_data('paragraph00.org')), 'rst')
-        expected = load('paragraph00.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('paragraph00.org', 'paragraph00.rst')
 
     def test_paragraph01(self):
-        rst = convert(OrgDoc(load_data('paragraph01.org')), 'rst')
-        expected = load('paragraph01.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('paragraph01.org', 'paragraph01.rst')
 
     def test_text00(self):
-        rst = convert(OrgDoc(load_data('text00.org')), 'rst')
-        expected = load('text00.rst')
-        self.assertEqual(rst, expected)
+        self.assertOrgAndRstEqual('text00.org', 'text00.rst')
 
 
 if __name__ == '__main__':

@@ -27,13 +27,13 @@ def find_markup(s, i):
         ('+', '+'),
         ('[[', ']]'),
     ]
-    valid_after = [',', '.', ')', ' ', '\t', '\r']
+    valid_after = lambda c: c.isspace() or c in ',.):'
 
     for start, end in looking_for:
         if s[i:].startswith(start):
             for j in range(i + 1, len(s)):
                 if s[j:].startswith(end) and \
-                        (len(s[j:]) == len(end) or s[j:][len(end)] in valid_after):
+                        (len(s[j:]) == len(end) or valid_after(s[j:][len(end)])):
                     markup = s[i:j + len(end)]
                     if len(markup) > len(start) + len(end):
                         return markup, i + len(markup)
@@ -64,9 +64,9 @@ def textify(s, outputtype):
     return text
 
 
-def to_html(orgdoc, only_body=True):
+def to_html(orgdoc, header=False):
     result = []
-    if not only_body:
+    if header:
         result.extend([
             '<!DOCTYPE html>',
             '<html>',
@@ -76,7 +76,7 @@ def to_html(orgdoc, only_body=True):
             '<body>'
         ])
     result.extend(_to_html(orgdoc.things))
-    if not only_body:
+    if header:
         result.extend([
             '</body>',
             '</html>'
@@ -110,8 +110,13 @@ def _to_html(things):
             result.extend(_to_html(thing.things))
             result.append('</%s>' % tag)
         elif isinstance(thing, ListItem):
-            text = '<li>%s</li>' % textify_html(thing)
-            result.append(text)
+            if thing.things:
+                result.append('<li>%s' % textify_html(thing))
+                result.extend(_to_html(thing.things))
+                result.append('</li>')
+            else:
+                text = '<li>%s</li>' % textify_html(thing)
+                result.append(text)
         elif isinstance(thing, Paragraph):
             lines = (textify_html(line) for line in thing.lines)
             text = '<p>%s</p>' % ' '.join(lines)
@@ -240,6 +245,7 @@ def _to_rst(things, level=0, **kwargs):
             result.append('.. code:: %s' % thing.language)
             result.append('')
             result.extend(('    %s' % line for line in thing.lines))
+            result.append('')
         elif isinstance(thing, DefinitionList):
             result.extend(_to_rst(thing.things))
         elif isinstance(thing, DefinitionItem):
@@ -250,6 +256,7 @@ def _to_rst(things, level=0, **kwargs):
             levels = ['=', '-', '~']
             result.append('%s' % textify_rst(thing))
             result.append('%s' % levels[thing.level - 1] * len(str(thing)))
+            result.append('')
         elif isinstance(thing, List):
             result.extend(_to_rst(thing.things, level + 1, ordered=thing.ordered))
         elif isinstance(thing, ListItem):
