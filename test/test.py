@@ -6,7 +6,6 @@ Copyright (c) 2013, Friedrich Paetzke (f.paetzke@gmail.com)
 All rights reserved.
 
 """
-
 import sys
 import os
 import unittest
@@ -221,6 +220,11 @@ class TestShortcuts(unittest.TestCase):
     def test_html_shortcut(self):
         html = convert_html(load_data('table03.org'))
         expected = '\n'.join(load('table03.html'))
+        self.assertEqual(html, expected)
+
+    def test_html_with_header_shortcut(self):
+        html = convert_html(load_data('table03.org'), header=True)
+        expected = '\n'.join(load('html_with_header.html'))
         self.assertEqual(html, expected)
 
 
