@@ -101,9 +101,9 @@ class TestOrgDoc(unittest.TestCase):
 
         self.assertEqual(len(org.things), 1)
         self.assertEqual(len(org.things[0].things), 3)
-        self.assertEqual(org.things[0].things[0].text, 'item1')
-        self.assertEqual(org.things[0].things[1].text, 'item2')
-        self.assertEqual(org.things[0].things[2].text, 'item3')
+        self.assertEqual(str(org.things[0].things[0]), 'item1')
+        self.assertEqual(str(org.things[0].things[1]), 'item2')
+        self.assertEqual(str(org.things[0].things[2]), 'item3')
 
     def test_list02(self):
         org = OrgDoc(load_data('list02.org'))
@@ -198,6 +198,18 @@ class TestHtml(unittest.TestCase):
 
     def test_list03(self):
         self.assertOrgAndHtmlEqual('list03.org', 'list03.html')
+
+    def test_list04(self):
+        self.assertOrgAndHtmlEqual('list04.org', 'list04.html')
+
+    def test_list05(self):
+        self.assertOrgAndHtmlEqual('list05.org', 'list05.html')
+
+    def test_list06(self):
+        self.assertOrgAndHtmlEqual('list06.org', 'list06.html')
+
+    def test_list07(self):
+        self.assertOrgAndHtmlEqual('list07.org', 'list07.html')
 
     def test_paragraph00(self):
         self.assertOrgAndHtmlEqual('paragraph00.org', 'paragraph00.html')
