@@ -251,7 +251,7 @@ class TestRst(unittest.TestCase):
 
     def test_header00(self):
         rst = convert(OrgDoc(load_data('header00.org')), 'rst')
-        expected = ['header1', '=======']
+        expected = ['header1', '=======', '']
         self.assertEqual(rst, expected)
 
     def test_header01(self):
