@@ -3,14 +3,14 @@
 Copyright (c) 2013, Friedrich Paetzke (f.paetzke@gmail.com)
 All rights reserved.
 
-orgco is tool/library for converting emacs' orgmode to other formats.
+With orgco you can convert Emacs' orgmode to other formats.
 
-supported output formats:
+Supported output formats:
 
-- html
-- rst
+- HTML
+- reStructuredText (rst)
 
-supported orgmode tags:
+Supported orgmode tags:
 
 - headers
 - code (inline and multi-line)
@@ -18,3 +18,35 @@ supported orgmode tags:
 - tables
 - links (external and images)
 - italic, bold, underlined, stroked markups
+
+To use orgco install it from PyPI:
+
+#+BEGIN_SRC bash
+$ pip install orgco
+#+END_SRC
+
+Orgco provides 2 simple functions to convert orgmode to html (=convert_html()=) and rst (=convert_rst()=).
+
+#+BEGIN_SRC python
+from orgco import convert_html
+
+with open('my_orgmode.org') as f:
+    html = convert_html(f.read())
+print(html)
+#+END_SRC
+
+The HTML converter takes an optional parameter (=header=True=) to decide if the output should only contain the inner body or act as a normal HTML file with header and body.
+
+Orgco comes also with a command line tool
+
+#+BEGIN_SRC bash
+$ orgco -h
+usage: orgco [-h] -i INPUT -o OUTPUT -f FORMAT [--html-header]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i INPUT, --input INPUT
+  -o OUTPUT, --output OUTPUT
+  -f FORMAT, --format FORMAT
+  --html-header
+#+END_SRC
