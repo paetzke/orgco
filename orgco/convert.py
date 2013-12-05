@@ -27,13 +27,13 @@ def find_markup(s, i):
         ('+', '+'),
         ('[[', ']]'),
     ]
-    valid_after = [',', '.', ')', ' ', '\t', '\r']
+    valid_after = lambda c: c.isspace() or c in ',.)'
 
     for start, end in looking_for:
         if s[i:].startswith(start):
             for j in range(i + 1, len(s)):
                 if s[j:].startswith(end) and \
-                        (len(s[j:]) == len(end) or s[j:][len(end)] in valid_after):
+                        (len(s[j:]) == len(end) or valid_after(s[j:][len(end)])):
                     markup = s[i:j + len(end)]
                     if len(markup) > len(start) + len(end):
                         return markup, i + len(markup)
