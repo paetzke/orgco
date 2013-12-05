@@ -8,6 +8,27 @@ All rights reserved.
 import re
 
 
+class Liner:
+
+    def __init__(self, content):
+        self.cnt = 0
+        self.lines = [line.rstrip() for line in content.split('\n')]
+
+    def pushback(self, times=1):
+        self.cnt -= times
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.cnt == len(self.lines):
+            raise StopIteration
+
+        line = self.lines[self.cnt]
+        self.cnt += 1
+        return line
+
+
 class OrgDoc:
 
     def __init__(self, content=None):
@@ -15,7 +36,7 @@ class OrgDoc:
         self._separated = False
 
         if content:
-            liner = (line.rstrip() for line in content.split('\n'))
+            liner = Liner(content)
             self._analyze(liner)
 
     def _get_thing_by_level(self, cls, level):
