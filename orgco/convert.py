@@ -81,6 +81,7 @@ def to_html(orgdoc, header=False):
             '</body>',
             '</html>'
         ])
+    result.append('')
     return result
 
 
