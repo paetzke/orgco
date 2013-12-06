@@ -259,6 +259,8 @@ def _to_rst(things, level=0, **kwargs):
             result.append('')
         elif isinstance(thing, List):
             result.extend(_to_rst(thing.things, level + 1, ordered=thing.ordered))
+            if level == 0:
+                result.append('')
         elif isinstance(thing, ListItem):
             if kwargs['ordered']:
                 text = '%d. %s' % (i + 1, textify_rst(thing))
