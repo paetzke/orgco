@@ -25,7 +25,7 @@ def load_data(filename):
 
 
 def load(filename):
-    return load_data(filename).split('\n')[0:-1]
+    return load_data(filename).split('\n')
 
 
 class TestFindMarkup(unittest.TestCase):
@@ -187,7 +187,7 @@ class TestHtml(unittest.TestCase):
 
     def test_header00(self):
         html = convert(OrgDoc(load_data('header00.org')), 'html')
-        expected = ['<h1>header1</h1>']
+        expected = ['<h1>header1</h1>', '']
         self.assertEqual(html, expected)
 
     def test_header01(self):

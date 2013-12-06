@@ -15,4 +15,3 @@ The code can be found at `http://github.com/paetzke/pyterm <http://github.com/pa
 (``hg clone https://code.google.com/p/go/``)
 
 The code can be found at `github <http://github.com/paetzke/pyterm>`_. To install it just go to the ``src`` directory and type: ``python3 setup.py install``.
-
