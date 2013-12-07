@@ -273,6 +273,12 @@ class TestRst(unittest.TestCase):
     def test_list03(self):
         self.assertOrgAndRstEqual('list03.org', 'list03.rst')
 
+    def test_list05(self):
+        self.assertOrgAndRstEqual('list05.org', 'list05.rst')
+
+    def test_list06(self):
+        self.assertOrgAndRstEqual('list06.org', 'list06.rst')
+
     def test_paragraph00(self):
         self.assertOrgAndRstEqual('paragraph00.org', 'paragraph00.rst')
 
