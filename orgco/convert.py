@@ -263,11 +263,17 @@ def _to_rst(things, level=0, **kwargs):
             if level == 0:
                 result.append('')
         elif isinstance(thing, ListItem):
+            spaces = '  ' * (level - 1)
             if kwargs['ordered']:
                 text = '%d. %s' % (i + 1, textify_rst(thing))
             else:
-                text = '%s* %s' % ('  ' * (level - 1), textify_rst(thing))
+                text = '%s* %s' % (spaces, textify_rst(thing))
             result.append(text)
+            if thing.things:
+                result.append('')
+            for x in _to_rst(thing.things, level + 1):
+                text = '  %s%s' % (spaces, x)
+                result.append(text.rstrip())
         elif isinstance(thing, Paragraph):
             for line in thing.lines:
                 result.append(textify_rst(line))
