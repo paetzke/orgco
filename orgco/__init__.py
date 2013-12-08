@@ -20,8 +20,8 @@ def _convert(content, outputtye, **kwargs):
     return '\n'.join(result)
 
 
-def convert_html(content, header=False):
-    return _convert(content, 'html', header=header)
+def convert_html(content, header=False, highlight=False, includes=[]):
+    return _convert(content, 'html', header=header, highlight=highlight, includes=includes)
 
 
 def convert_rst(content):

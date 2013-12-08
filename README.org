@@ -35,18 +35,24 @@ with open('my_orgmode.org') as f:
 print(html)
 #+END_SRC
 
-The HTML converter takes an optional parameter (=header=True=) to decide if the output should only contain the inner body or act as a normal HTML file with header and body.
+The HTML converter takes some optional parameters:
 
-Orgco comes also with a command line tool
+- =header=True=: To decide if the output should only contain the inner body or act as a normal HTML file with header and body.
+- =highlight=True=: To enable code highlighting.
+- =includes=['style.css']=: To include some additional CSS files.
+
+Orgco comes also with a command line tool:
 
 #+BEGIN_SRC bash
-$ orgco -h
-usage: orgco [-h] -i INPUT -o OUTPUT -f FORMAT [--html-header]
+usage: orgco.py [-h] -i INPUT -o OUTPUT -f FORMAT [--header] [--highlight]
+                [--includes INCLUDES [INCLUDES ...]]
 
 optional arguments:
   -h, --help            show this help message and exit
   -i INPUT, --input INPUT
   -o OUTPUT, --output OUTPUT
   -f FORMAT, --format FORMAT
-  --html-header
+  --header
+  --highlight
+  --includes INCLUDES [INCLUDES ...]
 #+END_SRC
