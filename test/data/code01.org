@@ -1,0 +1,3 @@
+#+BEGIN_SRC python
+is_ok = True
+#+END_SRC
