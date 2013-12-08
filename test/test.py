@@ -234,6 +234,11 @@ class TestShortcuts(unittest.TestCase):
         expected = '\n'.join(load('table03.html'))
         self.assertEqual(html, expected)
 
+    def test_html_with_highlight(self):
+        html = convert_html(load_data('code01.org'), highlight=True)
+        expected = '\n'.join(load('code01.html'))
+        self.assertEqual(html, expected)
+
     def test_html_with_header_shortcut(self):
         html = convert_html(load_data('table03.org'), header=True)
         expected = '\n'.join(load('html_with_header.html'))

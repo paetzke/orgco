@@ -7,6 +7,12 @@ All rights reserved.
 """
 import os
 
+from pygments import highlight as pyg_highlight
+from pygments.lexers import get_lexer_by_name, guess_lexer
+from pygments.formatters import HtmlFormatter
+from pygments.styles import get_style_by_name
+from pygments.util import ClassNotFound
+
 from .orgalyzer import Code, DefinitionList, DefinitionItem, Header, List, \
     ListItem, Paragraph, Table, TableRow
 
@@ -64,7 +70,7 @@ def textify(s, outputtype):
     return text
 
 
-def to_html(orgdoc, header=False):
+def to_html(orgdoc, header=False, highlight=False, includes=[]):
     result = []
     if header:
         result.extend([
@@ -72,10 +78,16 @@ def to_html(orgdoc, header=False):
             '<html>',
             '<head>',
             '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />',
+        ])
+
+        for include in includes:
+            result.append('<link rel="stylesheet" href="%s" />' % include)
+
+        result.extend([
             '</head>',
             '<body>'
         ])
-    result.extend(_to_html(orgdoc.things))
+    result.extend(_to_html(orgdoc.things, highlight=highlight))
     if header:
         result.extend([
             '</body>',
@@ -85,16 +97,27 @@ def to_html(orgdoc, header=False):
     return result
 
 
-def _to_html(things):
+def _to_html(things, highlight):
     result = []
     textify_html = lambda s: textify(s, 'html')
     for thing in things:
         if isinstance(thing, Code):
-            text = '<pre>%s</pre>' % thing
+            code = str(thing)
+            if highlight:
+                try:
+                    lexer = get_lexer_by_name(thing.language, stripall=True)
+                except ClassNotFound:
+                    lexer = guess_lexer(code)
+                formatter = HtmlFormatter(style=get_style_by_name('emacs'),
+                                          linenos=True,
+                                          cssclass='highlight')
+                text = pyg_highlight(code, lexer, formatter)
+            else:
+                text = '<pre>%s</pre>' % code
             result.append(text)
         elif isinstance(thing, DefinitionList):
             result.append('<dl>')
-            result.extend(_to_html(thing.things))
+            result.extend(_to_html(thing.things,  highlight))
             result.append('</dl>')
         elif isinstance(thing, DefinitionItem):
             result.append('<dt>%s</dt>' % textify_html(thing.term))
@@ -108,12 +131,12 @@ def _to_html(things):
         elif isinstance(thing, List):
             tag = 'ol' if thing.ordered else 'ul'
             result.append('<%s>' % tag)
-            result.extend(_to_html(thing.things))
+            result.extend(_to_html(thing.things,  highlight))
             result.append('</%s>' % tag)
         elif isinstance(thing, ListItem):
             if thing.things:
                 result.append('<li>%s' % textify_html(thing))
-                result.extend(_to_html(thing.things))
+                result.extend(_to_html(thing.things,  highlight))
                 result.append('</li>')
             else:
                 text = '<li>%s</li>' % textify_html(thing)
@@ -124,7 +147,7 @@ def _to_html(things):
             result.append(text)
         elif isinstance(thing, Table):
             result.append('<table>')
-            result.extend(_to_html(thing.things))
+            result.extend(_to_html(thing.things,  highlight))
             result.append('</table>')
         elif isinstance(thing, TableRow):
             tag = 'th' if thing.is_header else 'td'

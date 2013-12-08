@@ -34,6 +34,9 @@ setup(name='orgco',
       entry_points={
           'console_scripts': ['orgco = orgco.orgco:main']
       },
+      install_requires=[
+          'pygments',
+      ],
       classifiers=[
           'Intended Audience :: Developers',
           'License :: OSI Approved :: BSD License',
