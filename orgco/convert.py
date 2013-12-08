@@ -70,7 +70,7 @@ def textify(s, outputtype):
     return text
 
 
-def to_html(orgdoc, header=False):
+def to_html(orgdoc, header=False, highlight=False, includes=[]):
     result = []
     if header:
         result.extend([
@@ -78,10 +78,16 @@ def to_html(orgdoc, header=False):
             '<html>',
             '<head>',
             '<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />',
+        ])
+
+        for include in includes:
+            result.append('<link rel="stylesheet" href="%s" />' % include)
+
+        result.extend([
             '</head>',
             '<body>'
         ])
-    result.extend(_to_html(orgdoc.things))
+    result.extend(_to_html(orgdoc.things, highlight=highlight))
     if header:
         result.extend([
             '</body>',
