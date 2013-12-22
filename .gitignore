@@ -1,6 +1,6 @@
+*.pyc
 MANIFEST
 README.rst
-*.pyc
 
 .tox/
 build/
