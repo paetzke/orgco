@@ -189,6 +189,9 @@ class TestHtml(unittest.TestCase):
     def test_header01(self):
         self.assertOrgAndHtmlEqual('header01.org', 'header01.html')
 
+    def test_images00(self):
+        self.assertOrgAndHtmlEqual('images00.org', 'images00.html')
+
     def test_list01(self):
         self.assertOrgAndHtmlEqual('list01.org', 'list01.html')
 
@@ -261,6 +264,9 @@ class TestRst(unittest.TestCase):
 
     def test_header01(self):
         self.assertOrgAndRstEqual('header01.org', 'header01.rst')
+
+    def test_images00(self):
+        self.assertOrgAndRstEqual('images00.org', 'images00.rst')
 
     def test_list00(self):
         self.assertOrgAndRstEqual('list00.org', 'list00.rst')
