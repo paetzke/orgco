@@ -2,7 +2,7 @@ MANIFEST
 README.rst
 *.pyc
 
-.idea/
+.tox/
 build/
 dist/
 orgco.egg-info/
