@@ -19,9 +19,13 @@ from .orgalyzer import Code, DefinitionList, DefinitionItem, Header, List, \
 
 def convert(orgdoc, outputtype, **kwargs):
     if outputtype == 'html':
-        return to_html(orgdoc, **kwargs)
+        output = to_html(orgdoc, **kwargs)
     elif outputtype == 'rst':
-        return to_rst(orgdoc, **kwargs)
+        output = to_rst(orgdoc, **kwargs)
+    result = []
+    for lines in output:
+        result.extend(line for line in lines.split('\n'))
+    return result
 
 
 def find_markup(s, i):
@@ -164,34 +168,46 @@ def _to_html(things, highlight):
     return result
 
 
+def is_image(markup):
+    if markup[0] != '[':
+        return {}
+
+    link = markup[2:-2]
+    link_name = link.split('][')
+    if len(link_name) == 2:
+        link = link_name[0]
+        name = link_name[1]
+        ext = name.split('?')[0]
+        _unused, ext = os.path.splitext(ext)
+        if ext in ['.bmp', '.jpg', '.png', '.svg']:
+            return {'url': link, 'image': name}
+        return {'url': link, 'caption': name}
+    else:
+        ext = link.split('?')[0]
+        _unused, ext = os.path.splitext(ext)
+        if ext in ['.bmp', '.jpg', '.png', '.svg']:
+            return {'image': link}
+        return {'url': link, 'caption': link}
+
+
 def replace_html(markup):
     replacements = {
         '=': 'code',
         '*': 'b',
         '_': 'u',
         '/': 'i',
-        '+': 'del'}
+        '+': 'del',
+    }
 
-    if markup[0] == '[':
-        link = markup[2:-2]
-
-        link_name = link.split('][')
-        if len(link_name) == 2:
-            args = {
-                'link': link_name[0],
-                'name': link_name[1],
-            }
-        else:
-            _unused, ext = os.path.splitext(link)
-
-            if ext in ['.bmp', '.jpg', '.png', '.svg']:
-                return '<img src="%s" />' % link
-            args = {
-                'link': link,
-                'name': link,
-            }
-
-        return '<a href="%(link)s">%(name)s</a>' % args
+    url_image = is_image(markup)
+    if url_image:
+        if 'url' in url_image:
+            if 'image' in url_image:
+                return '<a href="%(url)s"><img src="%(image)s" /></a>' % url_image
+            else:
+                return '<a href="%(url)s">%(caption)s</a>' % url_image
+        elif 'image' in url_image:
+            return '<img src="%(image)s" />' % url_image
     else:
         args = {
             'tag': replacements[markup[0]],
@@ -206,37 +222,24 @@ def replace_rst(markup):
         '*': '**',  # bold
         '_': '',  # underline
         '/': '*',  # italic
-        '+': ''}  # strike
+        '+': '',  # strike
+    }
 
-    if markup[0] == '[':
-
-        link = markup[2:-2]
-
-        link_name = link.split('][')
-        if len(link_name) == 2:
-            args = {
-                'link': link_name[0],
-                'name': link_name[1],
-            }
-        else:
-            _unused, ext = os.path.splitext(link)
-
-            if ext in ['.bmp', '.jpg', '.png', '.svg']:
-                return '.. image:: %s' % link
-            args = {
-                'link': link,
-                'name': link,
-            }
-
-        return '`%(name)s <%(link)s>`_' % args
+    url_image = is_image(markup)
+    if url_image:
+        if 'url' in url_image:
+            if 'image' in url_image:
+                return '.. image:: %(image)s\n  :target: %(url)s' % url_image
+            else:
+                return '`%(caption)s <%(url)s>`_' % url_image
+        elif 'image' in url_image:
+            return '.. image:: %(image)s' % url_image
     else:
         args = {
             'markup': replacements[markup[0]],
             'text': markup[1:-1]
         }
         return '%(markup)s%(text)s%(markup)s' % args
-
-    return markup
 
 
 def to_markdown(orgdoc):

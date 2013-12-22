@@ -1,0 +1,7 @@
+[[https://travis-ci.org/paetzke/orgco][https://travis-ci.org/paetzke/orgco.png]]
+
+[[/static/images/pyterm.png]]
+
+[[https://travis-ci.org/paetzke/orgco][https://travis-ci.org/paetzke/orgco.png?branch=master]]
+
+[[https://travis-ci.org/paetzke/orgco.png?branch=master]]
