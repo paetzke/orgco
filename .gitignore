@@ -2,7 +2,6 @@
 MANIFEST
 README.rst
 
-.tox/
 build/
 dist/
 orgco.egg-info/
