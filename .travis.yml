@@ -3,5 +3,7 @@ python:
   - "2.7"
   - "3.3"
 install:
-  - pip install pygments
-script: py.test
+  - pip install coveralls pygments pytest-cov
+script: py.test --cov=orgco --cov-report=term-missing
+after_success:
+  - coveralls
