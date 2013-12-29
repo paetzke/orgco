@@ -23,15 +23,17 @@ def main():
     parser.add_argument('--includes', type=str, nargs='+')
     args = parser.parse_args()
 
-    kwargs = {
-        'highlight': args.highlight,
-        'header': args.header,
-        'includes': args.includes,
-    }
+    options = {}
+    if args.highlight:
+        options['highlight'] = args.highlight
+    if args.header:
+        options['header'] = args.header
+    if args.includes:
+        options['includes'] = args.includes
 
     input_content = args.input.read()
     orgdoc = OrgDoc(content=input_content)
-    output = convert(orgdoc, args.format, **kwargs)
+    output = convert(orgdoc, args.format, **options)
     for line in output:
         args.output.write('%s\n' % line)
 
