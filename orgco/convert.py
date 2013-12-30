@@ -243,24 +243,6 @@ def replace_rst(markup):
         return '%(markup)s%(text)s%(markup)s' % args
 
 
-def to_markdown(orgdoc):
-    return _to_markdown(orgdoc.things)
-
-
-def _to_markdown(things):
-    result = []
-    for thing in things:
-        if isinstance(thing, Code):
-            text = '`\n%s\n`\n' % thing
-        elif isinstance(thing, Header):
-            text = '%s %s\n' % ('#' * thing.level, thing)
-        elif isinstance(thing, Paragraph):
-            text = '%s\n' % thing
-
-        result.append(text)
-    return result
-
-
 def to_rst(orgdoc):
     return _to_rst(orgdoc.things)
 
