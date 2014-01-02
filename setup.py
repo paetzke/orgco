@@ -22,9 +22,7 @@ setup(name='orgco',
       entry_points={
           'console_scripts': ['orgco = orgco.orgco:main']
       },
-      install_requires=[
-          'pygments',
-      ],
+      install_requires=open('requirements/package.txt').read().splitlines(),
       classifiers=[
           'Intended Audience :: Developers',
           'License :: OSI Approved :: BSD License',
