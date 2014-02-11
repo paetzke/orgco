@@ -1,7 +1,6 @@
 *.pyc
 .coverage
 MANIFEST
-README.rst
 
 build/
 dist/
