@@ -8,9 +8,6 @@ orgco
 .. image:: https://pypip.in/v/orgco/badge.png
   :target: https://pypi.python.org/pypi/orgco/
 
-Copyright (c) 2013, Friedrich Paetzke (f.paetzke@gmail.com)
-All rights reserved.
-
 With orgco you can convert Emacs' orgmode to other formats.
 
 Supported output formats:
@@ -65,6 +62,13 @@ Orgco comes also with a command line tool:
       --highlight
       --includes INCLUDES [INCLUDES ...]
 
-.. image:: https://d2weczhvl823v0.cloudfront.net/paetzke/orgco/trend.png
-  :target: https://bitdeli.com/free
+CHANGELOG
+---------
+
+0.1.1
+~~~~~
+
+* Add support for PyPy
+
+Copyright (c) 2013, Friedrich Paetzke (paetzke@fastmail.fm). All rights reserved.
 
