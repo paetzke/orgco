@@ -9,13 +9,13 @@ All rights reserved.
 import os
 
 from pygments import highlight as pyg_highlight
-from pygments.lexers import get_lexer_by_name, guess_lexer
 from pygments.formatters import HtmlFormatter
+from pygments.lexers import get_lexer_by_name, guess_lexer
 from pygments.styles import get_style_by_name
 from pygments.util import ClassNotFound
 
-from .orgalyzer import Code, DefinitionList, DefinitionItem, Header, List, \
-    ListItem, Paragraph, Table, TableRow
+from .orgalyzer import (Code, DefinitionItem, DefinitionList, Header, List,
+                        ListItem, Paragraph, Table, TableRow)
 
 
 def convert(orgdoc, outputtype, **kwargs):
