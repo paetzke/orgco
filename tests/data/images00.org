@@ -5,3 +5,5 @@
 [[https://travis-ci.org/paetzke/orgco][https://travis-ci.org/paetzke/orgco.png?branch=master]]
 
 [[https://travis-ci.org/paetzke/orgco.png?branch=master]]
+
+[[/static/images/pyterm.gif]]

@@ -7,3 +7,5 @@
   :target: https://travis-ci.org/paetzke/orgco
 
 .. image:: https://travis-ci.org/paetzke/orgco.png?branch=master
+
+.. image:: /static/images/pyterm.gif

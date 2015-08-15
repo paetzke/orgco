@@ -2,7 +2,7 @@
 """
 orgco
 
-Copyright (c) 2013, Friedrich Paetzke (paetzke@fastmail.fm)
+Copyright (c) 2013, 2015 Friedrich Paetzke (paetzke@fastmail.fm)
 All rights reserved.
 
 """
@@ -16,6 +16,8 @@ from pygments.util import ClassNotFound
 
 from .orgalyzer import (Code, DefinitionItem, DefinitionList, Header, List,
                         ListItem, Paragraph, Table, TableRow)
+
+IMAGE_EXTENSIONS = ['.bmp', '.gif', '.jpg', '.png', '.svg']
 
 
 def convert(orgdoc, outputtype, **kwargs):
@@ -180,13 +182,13 @@ def is_image(markup):
         name = link_name[1]
         ext = name.split('?')[0]
         _unused, ext = os.path.splitext(ext)
-        if ext in ['.bmp', '.jpg', '.png', '.svg']:
+        if ext in IMAGE_EXTENSIONS:
             return {'url': link, 'image': name}
         return {'url': link, 'caption': name}
     else:
         ext = link.split('?')[0]
         _unused, ext = os.path.splitext(ext)
-        if ext in ['.bmp', '.jpg', '.png', '.svg']:
+        if ext in IMAGE_EXTENSIONS:
             return {'image': link}
         return {'url': link, 'caption': link}
 
