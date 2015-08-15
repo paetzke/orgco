@@ -62,13 +62,5 @@ Orgco comes also with a command line tool:
       --highlight
       --includes INCLUDES [INCLUDES ...]
 
-CHANGELOG
----------
-
-0.1.1
-~~~~~
-
-* Add support for PyPy
-
-Copyright (c) 2013, Friedrich Paetzke (paetzke@fastmail.fm). All rights reserved.
+Copyright (c) 2013-2015, Friedrich Paetzke (paetzke@fastmail.fm). All rights reserved.
 
