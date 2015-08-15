@@ -1,8 +1,8 @@
 * orgco
 
-[[https://travis-ci.org/paetzke/orgco][https://travis-ci.org/paetzke/orgco.png?branch=master]]
-[[https://coveralls.io/r/paetzke/orgco?branch=master][https://coveralls.io/repos/paetzke/orgco/badge.png?branch=master]]
-[[https://pypi.python.org/pypi/orgco/][https://pypip.in/v/orgco/badge.png]]
+[[https://travis-ci.org/paetzke/orgco][https://travis-ci.org/paetzke/orgco.svg?branch=master]]
+[[https://coveralls.io/r/paetzke/orgco?branch=master][https://coveralls.io/repos/paetzke/orgco/badge.svg?branch=master]]
+[[https://pypi.python.org/pypi/orgco/][https://badge.fury.io/py/orgco.svg]]
 
 With orgco you can convert Emacs' orgmode to other formats.
 
