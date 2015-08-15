@@ -2,7 +2,7 @@
 """
 orgco
 
-Copyright (c) 2013-2014, Friedrich Paetzke (f.paetzke@gmail.com)
+Copyright (c) 2013-2014, Friedrich Paetzke (paetzke@fastmail.fm)
 All rights reserved.
 
 """
@@ -37,7 +37,7 @@ def test_header01():
 
 
 def test_images00():
-        assertOrgAndRstEqual('images00.org', 'images00.rst')
+    assertOrgAndRstEqual('images00.org', 'images00.rst')
 
 
 def test_list00():
