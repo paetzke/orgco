@@ -2,12 +2,11 @@
 """
 orgco
 
-Copyright (c) 2013-2014, Friedrich Paetzke (f.paetzke@gmail.com)
+Copyright (c) 2013-2014, Friedrich Paetzke (paetzke@fastmail.fm)
 All rights reserved.
 
 """
-from setuptools import setup, find_packages
-
+from setuptools import find_packages, setup
 
 setup(name='orgco',
       py_modules=['orgco'],
@@ -15,7 +14,7 @@ setup(name='orgco',
       long_description=(open('README.rst').read()),
       version='0.1.1',
       author='Friedrich Paetzke',
-      author_email='f.paetzke@gmail.com',
+      author_email='paetzke@fastmail.fm',
       license='BSD',
       url='https://github.com/paetzke/orgco',
       packages=find_packages(exclude=['tests*']),
